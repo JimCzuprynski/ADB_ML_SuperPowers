@@ -1,6 +1,8 @@
 /*
 || Use these commands to set up credentials, etc. for loading VEVO tables
-|| from OCI-based external files
+|| from OCI-based external files. 
+|| Note: You will need to change your login, password, external file URI, 
+|| and external table log file table name as indicated below.
 */
 
 -----
@@ -10,8 +12,8 @@ EXEC DBMS_CLOUD.DROP_CREDENTIAL(credential_name => 'DEF_CRED_NAME');
 BEGIN
   DBMS_CLOUD.CREATE_CREDENTIAL(
     credential_name => 'DEF_CRED_NAME',
-    username => 'exadbma1@zerodefectcomputing.com',
-    password => 'N0M0reKn0bs#' );
+    username => '[your username here]',
+    password => '[your password here]' );
 END;
 /
 
@@ -24,7 +26,7 @@ BEGIN
    DBMS_CLOUD.CREATE_EXTERNAL_TABLE(
     table_name =>'XT_VOTING_RESULTS',
     credential_name =>'DEF_CRED_NAME',
-    file_uri_list => 'https://objectstorage.us-ashburn-1.oraclecloud.com/p/5L-dIxXNihB4Qa-tPmi54Sp4_eavvJL5yCJRxS09ZmU/n/zdcaudb/b/XTFILES/o/IL06_VotingResults_2020-02-09.txt',
+    file_uri_list => '[your uri list here]',
     format => json_object('delimiter' value '|', 'ignoremissingcolumns' value 'true', 'skipheaders' value '1'),
     column_list => 'v_id    NUMBER
     ,v_precinct_name        VARCHAR2(08)       
@@ -49,7 +51,7 @@ END;
 
 EXEC DBMS_CLOUD.VALIDATE_EXTERNAL_TABLE(TABLE_name => 'XT_VOTING_RESULTS');
 
-SELECT * FROM admin.validate$14_log;
+SELECT * FROM admin.[your_logtable];
 SELECT * FROM admin.xt_voting_results where rownum <= 10;
 
 -----
